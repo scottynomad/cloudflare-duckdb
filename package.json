@@ -3,8 +3,8 @@
 	"version": "0.1.1",
 	"scripts": {
 		"build": "rm -rf dist/ && tsc",
-		"build:docker": "docker buildx build --platform linux/amd64 -t tobilg/cloudflare-duckdb .",
-		"deploy": "wrangler deploy",
+		"build:docker": "rm -rf extensions && scripts/download_extensions.sh && docker buildx build --platform linux/amd64 -t tobilg/cloudflare-duckdb .",
+		"deploy": "rm -rf extensions && scripts/download_extensions.sh && wrangler deploy",
 		"dev": "wrangler dev",
 		"dev:docker": "docker run --rm -it --env-file ./.dev.vars -p 8080:3000 tobilg/cloudflare-duckdb",
 		"start": "wrangler dev",
@@ -13,15 +13,16 @@
 		"cf-typegen": "wrangler types"
 	},
 	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20251008.0",
 		"@types/node": "^22.15.21",
 		"tsx": "^4.20.6",
 		"typescript": "^5.9.3",
-		"wrangler": "^4.42.1"
+		"wrangler": "^4.42.2"
 	},
 	"dependencies": {
+		"@cloudflare/containers": "^0.0.28",
+		"@cloudflare/workers-types": "^4.20251011.0",
 		"@duckdb/node-api": "^1.4.1-r.1",
 		"@hono/node-server": "^1.19.5",
-		"hono": "^4.9.10"
+		"hono": "^4.9.12"
 	}
 }

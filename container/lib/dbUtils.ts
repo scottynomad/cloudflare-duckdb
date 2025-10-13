@@ -20,14 +20,11 @@ export const initialize = async (connection: DuckDBConnection) => {
   // Load home directory
   await query(connection, `SET home_directory='/tmp';`, false);
 
-  await query(connection, 'INSTALL \'/app/extensions/httpfs.duckdb_extension\';', false);
   await query(connection, 'LOAD \'/app/extensions/httpfs.duckdb_extension\';', false);
 
   if (process.env.R2_TOKEN && process.env.R2_ENDPOINT && process.env.R2_CATALOG) {
     // Load iceberg extension
-    await query(connection, 'INSTALL \'/app/extensions/avro.duckdb_extension\';', false);
     await query(connection, 'LOAD \'/app/extensions/avro.duckdb_extension\';', false);
-    await query(connection, 'INSTALL \'/app/extensions/iceberg.duckdb_extension\';', false);
     await query(connection, 'LOAD \'/app/extensions/iceberg.duckdb_extension\';', false);
 
     // Create secrets

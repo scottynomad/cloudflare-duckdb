@@ -2,7 +2,7 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "cloudflare-duckdb",
 	"main": "src/index.ts",
-	"compatibility_date": "2025-05-13",
+	"compatibility_date": "2025-10-11",
 	"migrations": [
 		{
 			"new_sqlite_classes": [
@@ -11,16 +11,15 @@
 			"tag": "v1"
 		}
 	],
-	"containers": [{
-		"name": "cloudflare-duckdb",
-		"image": "./Dockerfile",
-		"class_name": "Container",
-		"max_instances": 2,
-		"configuration": {
-			"memory": "4GB",
-      "vcpu": 2
+	"containers": [
+		{
+			"name": "cloudflare-duckdb",
+			"image": "./Dockerfile",
+			"class_name": "Container",
+			"max_instances": 1,
+			"instance_type": "standard-1"
 		}
-	}],
+	],
 	"durable_objects": {
 		"bindings": [
 			{
