@@ -5,10 +5,15 @@ mkdir -p $PWD/extensions
 
 # Download extensions
 curl http://extensions.duckdb.org/v1.4.1/linux_amd64/httpfs.duckdb_extension.gz --output $PWD/extensions/httpfs.duckdb_extension.gz
+curl http://extensions.duckdb.org/v1.4.1/linux_amd64/motherduck.duckdb_extension.gz --output $PWD/extensions/motherduck.duckdb_extension.gz
 curl http://extensions.duckdb.org/v1.4.1/linux_amd64/iceberg.duckdb_extension.gz --output $PWD/extensions/iceberg.duckdb_extension.gz
 curl http://extensions.duckdb.org/v1.4.1/linux_amd64/avro.duckdb_extension.gz --output $PWD/extensions/avro.duckdb_extension.gz
+curl http://extensions.duckdb.org/v1.4.1/linux_amd64/sqlite.duckdb_extension.gz --output $PWD/extensions/sqlite.duckdb_extension.gz
+
 
 # Unzip
 gunzip $PWD/extensions/httpfs.duckdb_extension.gz
+gunzip $PWD/extensions/motherduck.duckdb_extension.gz
 gunzip $PWD/extensions/iceberg.duckdb_extension.gz
 gunzip $PWD/extensions/avro.duckdb_extension.gz
+gunzip $PWD/extensions/sqlite.duckdb_extension.gz

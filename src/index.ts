@@ -1,10 +1,12 @@
-import { Container as PkgContainer } from '@cloudflare/containers';
+import { Container as PkgContainer } from "@cloudflare/containers";
 
 interface EnvWithCustomVariables extends Env {
   API_TOKEN: string;
   R2_TOKEN: string;
   R2_ENDPOINT: string;
   R2_CATALOG: string;
+  MOTHERDUCK_DB: string;
+  MOTHERDUCK_TOKEN: string;
 }
 
 export class Container extends PkgContainer<EnvWithCustomVariables> {
@@ -30,23 +32,48 @@ export class Container extends PkgContainer<EnvWithCustomVariables> {
       };
     }
 
+    // Add Motherduck credentials if provided
+    if (env.MOTHERDUCK_DB && env.MOTHERDUCK_TOKEN) {
+      envConfig = {
+        ...envConfig,
+        MOTHERDUCK_DB: env.MOTHERDUCK_DB,
+        MOTHERDUCK_TOKEN: env.MOTHERDUCK_TOKEN,
+      };
+    }
+
     this.defaultPort = 3000;
-    this.sleepAfter = '3m';
+    this.requiredPorts = [this.defaultPort];
+    this.sleepAfter = "3m";
     this.enableInternet = true;
     this.envVars = envConfig;
+  }
+
+  override onStart(): void {
+    console.log("Container started");
+  }
+
+  override onStop(): void {
+    console.log("Container stopped");
+  }
+
+  override onError(error: unknown): any {
+    console.error("Container error:", error);
+    throw error;
   }
 }
 
 export default {
   async fetch(request: Request, env: any): Promise<Response> {
     try {
-      return await env.CONTAINER.get(env.CONTAINER.idFromName('cloudflare-duckdb')).fetch(request);
+      const containerId = env.CONTAINER.idFromName("cloudflare-duckdb");
+      const container = env.CONTAINER.get(containerId);
+      return await container.fetch(request);
     } catch (err: unknown) {
       if (err instanceof Error) {
-        console.error('Error fetch:', err.message);
+        console.error("Error fetch:", err.message);
         return new Response(err.message, { status: 500 });
       }
-      return new Response('Unknown error', { status: 500 });
+      return new Response("Unknown error", { status: 500 });
     }
   },
 };
